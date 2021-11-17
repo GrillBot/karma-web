@@ -41,7 +41,7 @@ export class MainComponent implements OnInit {
         } else if (width < 1500) {
             return 20;
         } else {
-            return 50;
+            return 40;
         }
     }
 }

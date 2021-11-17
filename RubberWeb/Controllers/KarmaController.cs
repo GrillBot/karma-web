@@ -2,9 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.HttpSys;
 using RubberWeb.Models;
-using RubberWeb.Models.GrillBot;
 using RubberWeb.Models.Karma;
 using RubberWeb.Services;
 
@@ -14,33 +12,43 @@ namespace RubberWeb.Controllers
     [ApiController]
     public class KarmaController : Controller
     {
-        private AppDbRepository Repository { get; }
-        private GrillBotService GrillBotService { get; }
+        private UserService UserService { get; }
+        private AppDbContext Context { get; }
 
-        public KarmaController(AppDbRepository repository, GrillBotService grillBotService)
+        public KarmaController(AppDbContext context, UserService userService)
         {
-            Repository = repository;
-            GrillBotService = grillBotService;
+            Context = context;
+            UserService = userService;
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(PaginatedData<KarmaItem>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetData([FromQuery] PaginatedRequest request)
         {
-            var query = Repository.GetKarma(request.Sort);
+            var query = Context.Karma.AsQueryable();
+            if (request.Sort == PageSort.Asc) query = query.OrderBy(o => o.Karma);
+            else query = query.OrderByDescending(o => o.Karma);
             var data = PaginatedData<KarmaItem>.Create(query, request, entity => new KarmaItem(entity));
-
-            var users = await GrillBotService.GetUsersSimpleInfoBatchAsync(data.Data.Select(o => o.UserID));
 
             var position = PaginationHelper.CountSkipValue(request) + 1;
             foreach (var item in data.Data)
             {
-                item.User = users.Find(o => o.ID == item.UserID);
+                var user = await UserService.GetUserAsync(item.UserID);
 
-                if(item.User == null)
+                if (user == null)
                 {
                     item.User = SimpleUserInfo.DefaultUser;
                     item.User.ID = item.UserID;
+                }
+                else
+                {
+                    item.User = new SimpleUserInfo()
+                    {
+                        AvatarUrl = user.GetAvatarUrl(Discord.ImageFormat.Auto, 128) ?? user.GetDefaultAvatarUrl(),
+                        Discriminator = user.Discriminator,
+                        ID = user.Id,
+                        Name = user.Username
+                    };
                 }
 
                 item.Position = position;
@@ -49,17 +57,6 @@ namespace RubberWeb.Controllers
 
             data.Data = data.Data.ToList();
             return Ok(data);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                Repository.Dispose();
-                GrillBotService.Dispose();
-            }
-
-            base.Dispose(disposing);
         }
     }
 }

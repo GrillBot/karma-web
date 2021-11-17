@@ -1,5 +1,4 @@
-﻿using RubberWeb.Models.GrillBot;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
 
 namespace RubberWeb.Models.Karma

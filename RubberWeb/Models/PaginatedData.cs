@@ -24,8 +24,11 @@ namespace RubberWeb.Models
                 TotalItemsCount = query.Count(),
             };
 
+            if (data.TotalItemsCount == 0)
+                return data;
+
             var skip = PaginationHelper.CountSkipValue(request);
-            
+
             data.CanNext = skip + request.Limit < data.TotalItemsCount;
             data.CanPrev = skip > 0;
 
