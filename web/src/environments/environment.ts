@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-    production: false
+    production: false,
+    api: 'https://localhost:5000/api',
+    client_id: 'c544a99f-16f9-4c12-9692-698f916bb4e4'
 };
 
 /*
