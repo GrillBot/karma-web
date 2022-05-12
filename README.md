@@ -1,34 +1,27 @@
-# RubberWeb
+# Web
 
-RubberWeb is web UI for [RubberGod](https://github.com/Toaster192/rubbergod) karma system.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.2.
 
-## Requirements:
+## Development server
 
-- .NET Core 3.1
-- [Angular CLI](https://cli.angular.io/)
-- RubberGod database and [GrillBot](https://github.com/Misha12/GrillBot) instance.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-Microsoft Visual Studio 2019 (Recomended).
+## Code scaffolding
 
-## Systemd unit file
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-```
-[Unit]
-Description=RubberWeb
-After=network.target
+## Build
 
-[Service]
-ExecStart=/path/to/RubberWeb {port}
-Restart=on-failure
-WorkingDirectory=-/path/to/RubberWeb
-Environment="LANG=cs_CZ.UTF-8"
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-[Install]
-WantedBy=multi-user.target
-```
+## Running unit tests
 
-- Port is optional. Default value is 5000.
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Licence
+## Running end-to-end tests
 
-This project is licensed under the GNU GPL v.3 License.
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
