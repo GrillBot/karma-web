@@ -1,0 +1,13 @@
+stages:
+    - Build
+
+Production:
+    image: node:16
+    stage: Build
+    script:
+        - npm install -g @angular/cli
+        - npm install --legacy-peer-deps
+        - ng build --configuration=production
+    cache:
+        paths:
+            - node_modules/
