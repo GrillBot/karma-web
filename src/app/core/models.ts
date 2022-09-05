@@ -21,23 +21,3 @@ export interface KarmaResult {
     canNext: boolean;
     canPrev: boolean;
 }
-
-export class UriBuilder {
-    queryParts: { key: string, value: string }[] = [];
-
-    constructor(private baseUrl: string) { }
-
-    withQueryParam(key: string, value: string): UriBuilder {
-        this.queryParts.push({
-            key: encodeURIComponent(key),
-            value: encodeURIComponent(value)
-        });
-
-        return this;
-    }
-
-    toString(): string {
-        return this.baseUrl +
-            (this.queryParts.length == 0 ? '' : `?${this.queryParts.map(o => `${o.key}=${o.value}`).join('&')}`);
-    }
-}
