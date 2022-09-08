@@ -20,7 +20,10 @@ export class ApiService {
                 pageSize: pageSize
             }
         };
-        const url = `${environment.api}/users/karma`;
-        return this.httpClient.post<KarmaResult>(url, data, { headers: { 'ApiKey': environment.client_id } });
+        return this.httpClient.post<KarmaResult>(
+            `${environment.api}/user/karma`,
+            data,
+            { headers: { 'ApiKey': environment.client_id } }
+        );
     }
 }
