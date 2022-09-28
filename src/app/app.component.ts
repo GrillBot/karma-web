@@ -34,7 +34,8 @@ export class AppComponent implements OnInit {
     private getData(page: number) {
         window.history.replaceState({}, '', `/${page}`);
 
-        this.api.getKarmaData('karma', true, page, this.pageSize).subscribe(data => {
+        const requestPage = page - 1;
+        this.api.getKarmaData('karma', true, requestPage, this.pageSize).subscribe(data => {
             this.data = data;
             this.isLoaded = true;
 
